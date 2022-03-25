@@ -1,0 +1,76 @@
+import email
+from  selenium import webdriver
+from time import sleep
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains 
+from selenium.webdriver.common.keys import Keys 
+
+
+options = webdriver.ChromeOptions()
+
+# Parametros que serão necessários
+parameters = {
+    'EMAIL': '',
+    'SENHA': '',
+    'TITULO': 'TESTE DE E-MAIL',
+    'DESTINATARIO': 'thales.dartech@gmail.com',
+    'COPIA': '',
+    'DESCRICAO': 'Apenas um teste do projeto de enviar e-mail via gmail para um projeto',
+    'HEADLESS': False
+}
+
+if (parameters['HEADLESS']) == True:
+      options.add_argument("--headless")
+
+def main():
+        driver = webdriver.Chrome(executable_path=r'./chromedriver.exe', options=options) # Diretório do driver
+        link = 'https://www.google.com/gmail/' # Link do site
+        driver.get(link)
+        driver.maximize_window()  # Maximizando a tela
+        
+
+        loginGmail(driver)
+        enviarEmail(driver)
+
+
+def loginGmail(driver):
+        # LOGIN NO GMAIL
+        try:
+            driver.find_element_by_css_selector('#identifierId').send_keys(parameters['EMAIL']) # PREENCHENDO O E-MAIL
+            driver.find_element_by_css_selector('#identifierNext').click() # BOTÃO DE PROXIMO
+            sleep(1)
+            driver.find_element_by_css_selector('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input').send_keys(parameters['SENHA']) # PREENCHENDO A SENHA
+            driver.find_element_by_css_selector('#passwordNext').click() # BOTAO DE PROXIMO
+            try:
+                driver.find_element_by_css_selector('#yDmH0d > c-wiz.yip5uc.SSPGKf > c-wiz > div > div.p9lFnc > div > div > div > div.ZRg0lb.Kn8Efe > div:nth-child(3) > div > div.yKBrKe > div > span > span').click() # CASO TENHA AUTH VAI PROSSEGUIR
+            except:
+                pass
+        except:
+            pass    
+
+
+def enviarEmail(driver):
+    try:
+        # ENVIANDO O E-MAIL
+        sleep(2)
+        driver.execute_script('document.getElementsByClassName("T-I T-I-KE L3")[0].click()') # CLICA NO BOTÃO DE NOVO E-MAILS
+        sleep(2)
+        driver.find_element_by_id(":9d").send_keys(parameters['DESTINATARIO']) # PREENCHE O DESTINATARIO DO EMAIL
+        driver.find_element_by_id(":8v").send_keys(parameters['TITULO']) # PREENCHE O TITULO DO EMAIL
+        driver.find_element_by_id(":a1").send_keys(parameters['DESCRICAO']) # PREENCHE A DESCRICAO DO EMAIL
+        #driver.find_element_by_css_selector('.T-I.J-J5-Ji.aoO.v7.T-I-atl.L3').click() # FAZ O ENVIO DO E-MAIL
+
+    except:
+        pass
+
+def lerEmail(driver):
+    try:
+        sleep(2)
+    except:
+        pass
+
+
+
+
+if __name__ == '__main__':
+    main()
