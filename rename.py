@@ -2,7 +2,7 @@ import re
 import os
 import shutil
 
-main_folder = r'/Users/thale/Desktop/ProjetoTeste'
+main_folder = r''
 
 # Função que renomeia os Arquivos de acordo com a preferência
 def renomearArquivo(file):
